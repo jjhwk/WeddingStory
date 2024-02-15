@@ -4,6 +4,7 @@ from review.forms import PostForm
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.urls import reverse
 
+
 # Create your views here.
 def feed_detail(request, post_id):
     posts = Post.objects.get(id=post_id)
@@ -35,4 +36,4 @@ def feed_add(request):
     else:       
         form = PostForm()  # class는 변수에 담아줘야 저장 해줌
     context = {"form": form} 
-    return render(request, "reviews:feed_add", context)
+    return render(request, "reviews:feed_add", context)        
