@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from users.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib import auth
 
 
 def signup(request):
