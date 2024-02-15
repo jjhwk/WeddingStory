@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>Document</title>
+    <h>리뷰 목록</h>
+</head>
+<body>
+    <div id="feeds-list">            
+        <ul class="feeds">         
+            <h1>test</h1>              
+            {% for post in posts %}   
+                 <li class="post"> 
+                    <h2>사용자명 : {{ post.user_id }}</h2>
+                    <h2><a href="/posts/{{post.id}}/">제목 : {{ post.title }}</a></h2>
+                    <h2>내용 : {{ post.content }}</h2>
+                    <h2>조회수 : {{ post.view }}</h2>
+                    {% if post.updated_at %}
+                    <h2>수정시간 : {{ post.updated_at }}</h2>
+                    {% else %}
+                    <h2>생성시간 : {{ post.created_at }}</h2>
+                    {% endif %}
+                </li>  
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
