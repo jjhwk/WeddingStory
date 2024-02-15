@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>지도 생성하기</title>
+    
+</head>
+<body>
+<!-- 지도를 표시할 div 입니다 -->
+<div id="map" style="width:100vw;height:90vh;margin-top: 10vh;"></div>
+
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{map_key}}"></script>
+<script type="text/javascript">
+
+    // 가져오기 성공
+    function getSuccess(position) {
+        // 위도
+        const lat = position.coords.latitude;
+        // 경도
+        const lng = position.coords.longitude;
+        // 위도 경도 오차(m)
+        const accuracy = Math.floor(position.coords.accuracy);
+        // alert(lat +" "+ lng)
+
+
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
+    mapOption = { 
+        center: new kakao.maps.LatLng(lat,lng), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+ 
+// 마커를 표시할 위치와 내용을 가지고 있는 객체 배열입니다 
+let data = JSON.parse("{{ data | escapejs }}")
+var positions = []
+for(var i=0; i<data.length; i++){
+    var object = new Object();
+    object.content = `
+        <div style="border:none">
+            <img src="${data[i].img_url}" width="100">
+        <div>
+            ${data[i].place_name}
+        </div>
+        <div>
+            ${data[i].phone}
+        </div><div>
+    `;
+    object.latlng =new kakao.maps.LatLng(data[i].x, data[i].y)
+    positions.push(object)
+}
+// console.log(positions);
+
+for (var i = 0; i < positions.length; i ++) {
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: positions[i].latlng // 마커의 위치
+    });
+
+    // 마커에 표시할 인포윈도우를 생성합니다 
+    var infowindow = new kakao.maps.InfoWindow({
+        content: positions[i].content // 인포윈도우에 표시할 내용
+    });
+
+    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+}
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
+    }
+    
+    // 가지오기 실패(거부)
+    function getError() {
+        alert('Geolocation Error');
+    }
+    navigator.geolocation.getCurrentPosition(getSuccess, getError);
+
+</script>
+</body>
+</html>
