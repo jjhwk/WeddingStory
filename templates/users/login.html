@@ -1,15 +1,69 @@
-
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <style>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+    .container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: rgb(232, 184, 185);
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    .form-group button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+    }
+    .form-group button:hover {
+        background-color: #0056b3;
+    }
+</style>
+</head>
 <div id="login">
     <form method="POST" action="{% url 'users:login' %}">
         <h2>Login</h2>
         {% csrf_token %}
         {{ form.as_p }}
-        <p>username</p>
+        <p>아이디</p>
             <input type="text" name="username">
         <br>
-        <p>password</p>
-            <input type="text" name="password">
+        <p>비밀번호</p>
+            <input type="password" name="password">
         <br>
+        {% if error %}
+        <p>{{error}}</p>
+        {% endif %}
         <label for="remember-check">
             <input type="checkbox" id="remember-check">아이디 저장하기
         </label>
@@ -19,48 +73,5 @@
     </form>
 </div>
 
-
-<!-- 
-
-<div class="container">
-    <div class="welcome">
-      <div class="pinkbox">
-        <div class="signup nodisplay">
-          <h1>register</h1>
-          <form autocomplete="off">
-            <input type="text" placeholder="username">
-            <input type="email" placeholder="email">
-            <input type="password" placeholder="password">
-            <input type="password" placeholder="confirm password">
-            <button class="button submit">create account </button>
-          </form>
-        </div>
-        <div class="signin">
-          <h1>sign in</h1>
-          <form class="more-padding" autocomplete="off">
-            <input type="text" placeholder="username">
-            <input type="password" placeholder="password">
-            <div class="checkbox">
-              <input type="checkbox" id="remember" /><label for="remember">remember me</label>
-            </div>
-  
-            <button class="button submit">login</button>
-          </form>
-        </div>
-      </div>
-      <div class="leftbox">
-        <h2 class="title"><span>BLOOM</span>&<br>BOUQUET</h2>
-        <p class="desc">pick your perfect <span>bouquet</span></p>
-        <img class="flower smaller" src="https://image.ibb.co/d5X6pn/1357d638624297b.jpg" alt="1357d638624297b" border="0">
-        <p class="account">have an account?</p>
-        <button class="button" id="signin">login</button>
-      </div>
-      <div class="rightbox">
-        <h2 class="title"><span>BLOOM</span>&<br>BOUQUET</h2>
-        <p class="desc"> pick your perfect <span>bouquet</span></p>
-        <img class="flower" src="https://preview.ibb.co/jvu2Un/0057c1c1bab51a0.jpg"/>
-        <p class="account">don't have an account?</p>
-        <button class="button" id="signup">sign up</button>
-      </div>
-    </div>
-   </div> -->
+</body>
+</html>

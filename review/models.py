@@ -22,11 +22,11 @@ class Post(models.Model):
     
 
 class Comment(models.Model):
-    user_id = models.ForeignKey("users.User",
-                             verbose_name="사용자 아이디",
-                             on_delete=models.CASCADE)
+    user = models.ForeignKey("users.User",
+                            verbose_name="사용자 아이디",
+                            on_delete=models.CASCADE)
     post = models.ForeignKey(Post,
-                             verbose_name="포스트",
-                             on_delete=models.CASCADE)
+                            verbose_name="포스트",
+                            on_delete=models.CASCADE)
     content = models.TextField("내용")
     created = models.DateTimeField("작성일시", auto_now_add=True)

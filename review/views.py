@@ -5,6 +5,7 @@ from django.views.decorators.http import require_POST
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.urls import reverse
 
+
 # Create your views here.
 def feed_detail(request, post_id):
     posts = Post.objects.get(id=post_id)
