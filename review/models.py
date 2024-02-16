@@ -5,7 +5,7 @@ from users.models import User
 
 # Create your models here.
 class Post(models.Model):  
-    user = models.ForeignKey("users.User", verbose_name="사용자 아이디", on_delete=models.CASCADE)  
+    user = models.ForeignKey(User, verbose_name="사용자 아이디", on_delete=models.CASCADE)  
     title = models.CharField("포스트 제목", max_length=100)
     content = models.TextField("포스트 내용")
     created_at = models.DateTimeField("작성일시", auto_now_add=True) 
@@ -18,7 +18,7 @@ class Post(models.Model):
     def __str__(self):       # 제목을 문자열로 보여쥼 
         return self.title
     def __str__(self):
-        return f"{self.user.username}의 Post(id:{self.id})"
+        return f"{self.user.user_id}의 Post(id:{self.id})"
     
 
 class Comment(models.Model):
