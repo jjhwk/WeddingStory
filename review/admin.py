@@ -1,5 +1,5 @@
 from django.contrib import admin
-from review.models import Post
+from review.models import Post, Comment
 
 @admin.register(Post)
 class ReviewAdmin(admin.ModelAdmin):
@@ -7,7 +7,18 @@ class ReviewAdmin(admin.ModelAdmin):
         "id",
         "user_id",
         "title",
-        "created_at"
+        "created_at",
+        "updated_at",
+    ]
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "post",
+        "content",
+        "created_at",
+        "updated_at",
     ]
 
 # Register your models here.

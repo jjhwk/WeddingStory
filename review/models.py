@@ -8,8 +8,8 @@ class Post(models.Model):
     user = models.ForeignKey(User, verbose_name="사용자 아이디", on_delete=models.CASCADE)  
     title = models.CharField("포스트 제목", max_length=100)
     content = models.TextField("포스트 내용")
-    created_at = models.DateTimeField("작성일시", auto_now_add=True) 
-    updated_at = models.DateTimeField("글수정시간", auto_now=True)
+    created_at = models.DateTimeField("작성 일시", auto_now_add=True) 
+    updated_at = models.DateTimeField("글수정 시간", auto_now=True)
     view = models.PositiveIntegerField(default=0)
     score = models.IntegerField("평점", validators=[MinValueValidator(0), MaxValueValidator(5)])
 
@@ -22,11 +22,11 @@ class Post(models.Model):
     
 
 class Comment(models.Model):
-    user = models.ForeignKey("users.User",
-                            verbose_name="사용자 아이디",
-                            on_delete=models.CASCADE)
-    post = models.ForeignKey(Post,
-                            verbose_name="포스트",
-                            on_delete=models.CASCADE)
+    user = models.ForeignKey("users.User", verbose_name="사용자 아이디", on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, verbose_name="포스트", on_delete=models.CASCADE)
     content = models.TextField("내용")
-    created = models.DateTimeField("작성일시", auto_now_add=True)
+    created_at = models.DateTimeField("작성일시", auto_now_add=True)
+    updated_at = models.DateTimeField("글수정 시간", auto_now=True)
+
+    def __str__(self):
+        return self.content

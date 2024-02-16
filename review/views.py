@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from review.models import Post, Comment
 from review.forms import PostForm, CommentForm
 from django.views.decorators.http import require_POST
@@ -8,9 +8,9 @@ from django.urls import reverse
 
 # Create your views here.
 def feed_detail(request, post_id):
-    posts = Post.objects.get(id=post_id)
+    post = Post.objects.get(id=post_id)
     context = {
-       "posts" : posts,        
+       "post" : post,        
     }
     return render(request, "reviews/feed_detail.html", context)
 
@@ -44,7 +44,8 @@ def feed_add(request):
     context = {"form": form} 
     return render(request, "reviews/feed_add.html", context)
 
-@require_POST 
+
+@require_POST # 댓글 작성을 처리할 View, Post 요청만 허용
 def comment_add(request):
     # request.POST 로 전달된 데이터를 사용해 CommentForm 인스턴스를 생성
     form = CommentForm(data=request.POST)
@@ -65,5 +66,16 @@ def comment_add(request):
 
         else: # "next"값을 전달받지 않았다면 피드페이지의 글 위치로 이동
             # 생성한 comment에서 연결된 post 정보를 가져와서 id값을 사용
-            url_next = reverse("reviews:feeds_list") + f"#post-{comment.post.id}"
+            url_next = reverse("posts:feeds") + f"#post-{comment.post.id}"
         return HttpResponseRedirect(url_next)
+
+
+@require_POST
+def comment_delete(request, comment_id):
+    comment = Comment.objects.get(id=comment_id)
+    if comment.user == request.user:
+        comment.delete()
+        url = reverse("reviews:feeds_list") + f"#post-{comment.post.id}"
+        return HttpResponseRedirect(url)
+    else:
+        return HttpResponseForbidden("이 댓글을 삭제할 권한이 없습니다")    

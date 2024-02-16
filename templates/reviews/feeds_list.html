@@ -19,7 +19,7 @@
                     {% else %}
                     <h2>생성시간 : {{ post.created_at }}</h2>
                     {% endif %}
-                    
+                    <a href="{% url 'reviews:feed_detail' post_id=post.id %}">상세보기</a>
                 </li>  
             {% endfor %}
         </ul>
