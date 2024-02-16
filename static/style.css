@@ -9,12 +9,20 @@ header{
     background-color: white;
 
     border-bottom: 1px solid lightgrey;
+
+    display: flex;
+    justify-content: space-between;
 }
     header p {
+        width: 100px;
         color: rgb(247, 202, 203);
         margin-left: 20px;
         font-weight: bold;
     }
+
+section{
+    margin-top: 50px;
+}
 
 #theme {
     width: 360px;
