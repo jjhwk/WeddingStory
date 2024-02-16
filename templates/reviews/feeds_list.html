@@ -11,7 +11,8 @@
             {% for post in posts %}   
                  <li class="post"> 
                     <h2>사용자명 : {{ post.user_id }}</h2>
-                    <h2><a href="/posts/{{post.id}}/">제목 : {{ post.title }}</a></h2>
+                    <h2>평점 : {{ post.score }}</h2>
+                    <h2>제목 : {{ post.title }}</h2>
                     <h2>내용 : {{ post.content }}</h2>
                     <h2>조회수 : {{ post.view }}</h2>
                     {% if post.updated_at %}
