@@ -19,7 +19,7 @@ params = {
 }
 
 data_list = requests.get(url, params=params, headers=headers).json()["documents"]
-print(data_list)
+# print(data_list)
 
 # url = data_list["place_url"]
 # print(url)
@@ -27,6 +27,7 @@ print(data_list)
 
 def search(address1="서울시", address2="마포", keyword="웨딩홀"):
     data = []
+    print(data,"11111111111111111")
     params = {
     "query" : f"{address1} {address2} {keyword}",    
     }
@@ -40,7 +41,7 @@ def search(address1="서울시", address2="마포", keyword="웨딩홀"):
         # img_url = res["mainphotourl"]
         
         d = dict()
-        d["place_url"] = i["place_url"]
+        d["place_url"] = i["place_url"] if i["place_url"] else None
         d["place_name"] = i["place_name"]
         d["img_url"] = res.get("mainphotourl") if res.get("mainphotourl") != None else "https://png.pngtree.com/png-clipart/20190119/ourmid/pngtree-wedding-marry-newcomer-happy-event-png-image_469605.jpg"
         d["x"] = i["y"]
@@ -53,6 +54,6 @@ def search(address1="서울시", address2="마포", keyword="웨딩홀"):
     
 # https://place.map.kakao.com/main/v/1282059086
 # http://place.map.kakao.com/1282059086
-    
+    print(data)
     return data
 
