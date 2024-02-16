@@ -7,6 +7,8 @@ from django.urls import reverse
 from django.contrib import auth
 
 
+
+
 def signup(request):
     if request.method == 'POST':
         
@@ -18,7 +20,7 @@ def signup(request):
                                             name=request.POST['name'])
             auth.login(request, user)
             return redirect('/')
-        # return render(request, "users/signup.html")
+   
     return render(request, "users/signup.html")
 
 
