@@ -44,3 +44,26 @@ def feed_add(request):
     context = {"form": form} 
     return render(request, "reviews/feed_add.html", context)
 
+@require_POST 
+def comment_add(request):
+    # request.POST 로 전달된 데이터를 사용해 CommentForm 인스턴스를 생성
+    form = CommentForm(data=request.POST)
+
+    if form.is_valid():
+        # commit=False 옵션으로 메모리상에 Comment 객체 생성
+        comment = form.save(commit=False)
+
+        # Comment 생성에 필요한 사용자 정보를 request에서 가져와 할당
+        comment.user = request.user
+
+        # DB에 Comment 객체 저장
+        comment.save()
+       
+        # URL 로 'next'값을 전달받았다면 댓글 작성 완료 후 전당받은 값으로 이동
+        if request.GET.get("next"):
+            url_next = request.GET.get("next")
+
+        else: # "next"값을 전달받지 않았다면 피드페이지의 글 위치로 이동
+            # 생성한 comment에서 연결된 post 정보를 가져와서 id값을 사용
+            url_next = reverse("reviews:feeds_list") + f"#post-{comment.post.id}"
+        return HttpResponseRedirect(url_next)
