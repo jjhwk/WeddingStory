@@ -7,18 +7,6 @@ from django.urls import reverse
 from django.contrib import auth
 
 
-# def signup(request):
-#     if request.method == 'POST':
-#         form = SignupForm(data=request.POST, files=request.FILES)
-#         if form.is_valid():
-#             user = form.save()
-#             login(request,user)
-#             return redirect('/')
-        
-#     else:
-#         form = SignupForm()
-#     context = {"form": form}
-#     return render(request, "users/signup.html")
 
 
 def signup(request):
@@ -32,7 +20,7 @@ def signup(request):
                                             name=request.POST['name'])
             auth.login(request, user)
             return redirect('/')
-        # return render(request, "users/signup.html")
+   
     return render(request, "users/signup.html")
 
 
