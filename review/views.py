@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from review.models import Post, Comment
-from review.forms import PostForm, CommentForm
+from review.models import Post
+from review.forms import PostForm, Comment
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.urls import reverse
@@ -21,6 +21,7 @@ def feeds_list(request):
        "posts" : posts,   
        "comment_form":comment_form     
     }
+    
     return render(request, "reviews/feeds_list.html", context)
 
 
