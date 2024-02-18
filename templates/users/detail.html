@@ -1,38 +1,41 @@
 {% extends 'base.html' %}
 {% block content %}
-<section>
-    <h2>개인 정보</h2>
-    <p>아이디: : {{ user.user_id }}<span id="userId"></span></p>
-    <p>이메일: {{ user.email }}<span id="userEmail"></span></p>
-    <p>주소:{{ user.address }}<span id="userAddress"></span></p>
-    <p>프로필 사진:{{ user.profile_image }}</p>
-    <img id="profilePic" src="프로필_이미지_URL" alt="프로필 사진">
-    
-    <!-- 프로필 사진 업로드 버튼 -->
-    <input type="file" accept="image/*" id="profilePicInput">
-    <button onclick="uploadProfilePic()">프로필 사진 업로드</button>
+<div class="c_header">
+    <h4>프로필 수정</h2>
+    <p class="contxt">마이페이지</p>
+</div>
+<table class="table">
+    <tr>
+        <th width='20%'>아이디</th>
+        <td>{{user.user_id}}</td>      
+    </tr>
+    <tr>
+        <th>이름</th>
+        <td>{{user.name}}</td>      
+    </tr>
+    <tr>
+        <th>프로필 사진</th>
+        <td>
+            <img src = '{{user.profile_image.url}}'>      
+        </td>
+    <tr>
+        <th>사진 변경</th>
+        <td>
+            <input type="file" id="inputImage" name="profileImage" accept="image/*">
+        </td>
+    </tr>    
+    </tr>
+    <tr>
+        <th width='20%'>이메일</th>
+        <td>{{user.email}}</td>      
+    </tr>
+    <tr>
+        <th>전화번호</th>
+        <td>{{user.user_tel}}</td>      
+    </tr>
+</table>
+<p>회원정보 수정하러가기</p>
+<a href="{% url 'users:update' %}">회원가입 하러가기</a>
 
-    <script>
-        // 프로필 사진 업로드 함수
-        function uploadProfilePic() {
-            var input = document.getElementById('profilePicInput');
-            var file = input.files[0];
 
-            // 파일 유효성 검사
-            if (file) {
-                // 이미지 파일인지 확인
-                if (file.type.startsWith('image/')) {
-                    // 파일 업로드 동작 구현
-                    // 여기에 파일 업로드 코드를 작성합니다.
-                    alert('프로필 사진이 업로드되었습니다.');
-                } else {
-                    alert('이미지 파일을 선택해주세요.');
-                }
-            } else {
-                alert('파일을 선택해주세요.');
-            }
-        } 
-    </script> 
-
-</section>
 {% endblock %}

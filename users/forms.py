@@ -2,7 +2,8 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .models import User, UserManager
 from django.core.exceptions import ValidationError
-
+from django.contrib.auth.forms import UserChangeForm
+from .models import Profile
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -23,7 +24,8 @@ class SignupForm(forms.Form):
     username = forms.CharField()
     password1 = forms.CharField(widget=forms.PasswordInput)
     password2 = forms.CharField(widget=forms.PasswordInput)
-
+    profile_image = forms.ImageField()
+    short_description = forms.CharField()
 
     def clean_username(self):
         username = self.cleaned_data["username"]
@@ -39,12 +41,35 @@ class SignupForm(forms.Form):
     def save(self):
         username = self.cleaned_data["username"]
         password1 = self.cleaned_data["password1"]
+        profile_image = self.cleaned_data["profile_image"]
+        short_description = self.cleaned_data["short_description"]
 
         user = User.objects.create_user(
             username=username,
-            password=password1
+            password=password1,
+            profile_image=profile_image,
+            short_description=short_description,
         )
         return user
+    
+
+class CustomUserChangeForm(UserChangeForm):
+	password = None
+    # UserChangeForm에서는 password를 수정할 수 없다.
+    # 하지만 이렇게 None 값으로 지정해주지 않으면 password를 변경할 수 없다는 설명이 화면에 표현된다.
+    class Meta:
+        model = get_user_model()
+        fields = ['user_id','name','user_tel','email','objects','profile_image', 'short_description',]
+        
+class ProfileForm(models.Model):
+    username = forms.CharField(label="별명", required=False)
+    description = forms.CharField(label="자기소개", required=False, widget=forms.Textarea())
+    image = forms.ImageField(label="이미지", required=False)
+   	# 위의 내용을 정의하지 않아도 상관없지만, 화면에 출력될 때 label이 영문으로 출력되는 것이 싫어서 수정한 것이다..
+    class Meta:
+        model = Profile
+        fields = ['user_id','name','user_tel','email','objects','profile_image', 'short_description',]
+        
     
 
 
@@ -96,7 +121,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'name')
+        fields = ['email', 'name', 'user_id','profile_image']
 
     def clean_password2(self):
         # 두 비밀번호 입력 일치 확인
@@ -116,34 +141,22 @@ class UserCreationForm(forms.ModelForm):
         return user
 
 
-class UserChangeForm(forms.ModelForm):
-    # 비밀번호 변경 폼
-    password = ReadOnlyPasswordHashField(
-        label='Password'
-    )
-
-    class Meta:
-        model = User
-        fields = ('email', 'password', 'is_superuser')
-
-    def clean_password(self):
-        # Regardless of what the user provides, return the initial value.
-        # This is done here, rather than on the field, because the
-        # field does not have access to the initial value
-        return self.initial["password"]
 
 
+# class UserChangeForm(forms.ModelForm):
+#     # 비밀번호 변경 폼
+#     password = ReadOnlyPasswordHashField(
+#         label='Password'
+#     )
 
-
-# class UserForm(forms.ModelForm):
 #     class Meta:
 #         model = User
-#         fields = ['ID','name', 'address', 'profile_picture']
+#         fields = ('email', 'password', 'is_superuser')
+
+#     def clean_password(self):
+#         # Regardless of what the user provides, return the initial value.
+#         # This is done here, rather than on the field, because the
+#         # field does not have access to the initial value
+#         return self.initial["password"]
 
 
-# class ProfileForm(forms.ModelForm):
-#     profile_photo = forms.ImageField(required=False) # 선택적으로 입력할 수 있음.
-    
-#     class Meta:
-#         model = Profile
-#         fields = ['nickname', 'profile_picture']
