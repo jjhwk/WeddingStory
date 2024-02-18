@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from review.models import Post, Comment
 from review.forms import PostForm, CommentForm
+from picture.models import PostImage
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.urls import reverse
@@ -9,8 +10,10 @@ from django.urls import reverse
 # Create your views here.
 def feed_detail(request, post_id):
     post = Post.objects.get(id=post_id)
+    comment_form = CommentForm()
     context = {
-       "post" : post,        
+       "post" : post,
+       "comment_form" : comment_form        
     }
     return render(request, "reviews/feed_detail.html", context)
 
@@ -24,6 +27,8 @@ def feeds_list(request):
     return render(request, "reviews/feeds_list.html", context)
 
 
+
+
 def feed_add(request):
     if request.method == "POST":
         print(request.user)
@@ -34,6 +39,14 @@ def feed_add(request):
             print(request.user)
             post.user = request.user
             post.save()
+
+            for image_file in request.FILES.getlist("images"):
+                # request.FILES 또는 request.FILES.getlist() 로 가져온 파일은
+                # Model 의 ImageField부분에 곧바로 할당
+                PostImage.objects.create(
+                    post=post,
+                    photo=image_file,
+                )
 
             # 피드페이지로 이동하여 생성된 Post의 위치로 스크롤 되도록 함
             url = reverse("reviews:feeds_list") + f"#post-{post.id}"
@@ -46,7 +59,7 @@ def feed_add(request):
 
 
 @require_POST # 댓글 작성을 처리할 View, Post 요청만 허용
-def comment_add(request):
+def comment_add(request, post_id):
     # request.POST 로 전달된 데이터를 사용해 CommentForm 인스턴스를 생성
     form = CommentForm(data=request.POST)
 
@@ -60,13 +73,13 @@ def comment_add(request):
         # DB에 Comment 객체 저장
         comment.save()
        
-        # URL 로 'next'값을 전달받았다면 댓글 작성 완료 후 전당받은 값으로 이동
+        # URL 로 'next'값을 전달받았다면 댓글 작성 완료 후 전달받은 값으로 이동
         if request.GET.get("next"):
             url_next = request.GET.get("next")
 
         else: # "next"값을 전달받지 않았다면 피드페이지의 글 위치로 이동
             # 생성한 comment에서 연결된 post 정보를 가져와서 id값을 사용
-            url_next = reverse("posts:feeds") + f"#post-{comment.post.id}"
+            url_next = reverse("reviews:feeds_list") + f"#post-{comment.post.id}"
         return HttpResponseRedirect(url_next)
 
 

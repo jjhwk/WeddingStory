@@ -41,17 +41,18 @@
             <p>댓글이 없어요..</p>
             {% endif %}
         
-        <div class="post-comment-create">
-            <!-- action 속성을 "댓글추가" View를 가리키는 URL로 지정 -->
-            <form method="POST" action="{% url 'reviews:comment_add' post_id=post.id %}">
-                {% csrf_token %}
-                <!-- 사용자가 직접 입력하지 않는 고정된 데이터를 form내부에 위치 -->
-                <input type="hidden" name="post" value="{{ post.id }}">
-                <!-- 전달된 CommentForm의 필드들 중, "content"필드만 렌더링 -->
-                {{ comment_form.content }}
-                <button type="submit">게시</button>
-            </form>
-        </div>
+            <div class="post-comment-create">
+                <!-- action 속성을 "댓글 추가" View를 가리키는 URL로 지정 -->
+                <form method="POST" action="{% url 'reviews:comment_add' post_id=post.id %}?next={% url 'reviews:feed_detail' post_id=post.id %}">
+                    {% csrf_token %}
+                    <!-- 사용자가 직접 입력하지 않는 고정된 데이터를 form 내부에 위치 -->
+                    <input type="hidden" name="post" value="{{ post.id }}">
+                    <!-- 전달된 commentForm의 필드들 중, "content"필드만 렌더링-->
+                    <!-- as_p를 content로 수정 -->
+                    {{ comment_form.content }} 
+                    <button type="submit">게시</button>
+                </form>
+            </div>
 
 
     </body>

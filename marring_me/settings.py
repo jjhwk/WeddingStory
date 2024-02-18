@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "users",
     "review",
     "index",
+    "picture",
 ]
 
 MIDDLEWARE = [
