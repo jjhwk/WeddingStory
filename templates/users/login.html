@@ -1,77 +1,38 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <style>
-
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
-    .container {
-        max-width: 400px;
-        margin: 50px auto;
-        padding: 20px;
-        background-color: rgb(232, 184, 185);
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    h2 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    .form-group {
-        margin-bottom: 20px;
-    }
-    .form-group label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-    .form-group input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-    }
-    .form-group button {
-        width: 100%;
-        padding: 10px;
-        background-color: #007bff;
-        border: none;
-        border-radius: 5px;
-        color: #fff;
-        cursor: pointer;
-    }
-    .form-group button:hover {
-        background-color: #0056b3;
+{% extends 'base.html' %}
+{% load static%}
+{% block head %}
+<style>
+    body{
+        height: 100%;
+        background-image: url("https://img.freepik.com/free-vector/pink-flower-frame-background-with-watercolor_65186-2566.jpg?w=1380&t=st=1708341988~exp=1708342588~hmac=dd5ef67d2596a26c30d72142d334fed8a70c087f9400f1c93b93bec912f5a2c1");
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 </style>
-</head>
+{% endblock %}
+{% block content %}
 <div id="login">
+    <h2>Login</h2>
     <form method="POST" action="{% url 'users:login' %}">
-        <h2>Login</h2>
         {% csrf_token %}
         {{ form.as_p }}
         <p>아이디</p>
-            <input type="text" name="username">
+            <input  type="text" name="username">
         <br>
         <p>비밀번호</p>
             <input type="password" name="password">
         <br>
         {% if error %}
-        <p>{{error}}</p>
+        <p>{{error}}</p>    
         {% endif %}
-        <label for="remember-check">
-            <input type="checkbox" id="remember-check">아이디 저장하기
+        <!-- <label for="remember-check">
         </label>
+            <input type="checkbox" id="remember-check">아이디 저장하기 -->
         <button type="submit" class="btn btn-login">로그인</button>
-        <p>계정이 없으신가요?</p>
-        <a href="{% url 'users:signup' %}">회원가입 하러가기</a>
+        <div class="login-hover">
+            <p class="not">계정이 없으신가요?</p>
+            <a class="go" href="{% url 'users:signup' %}">회원가입 하러가기</a>
+        </div>
     </form>
 </div>
-
-</body>
-</html>
+{% endblock %}

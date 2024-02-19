@@ -1,42 +1,29 @@
 {% extends 'base.html' %}
+
+{% block head %}
+<style>
+    body{
+        height: 100%;
+        background-image: url("https://img.freepik.com/free-vector/pink-flower-frame-background-with-watercolor_65186-2566.jpg?w=1380&t=st=1708341988~exp=1708342588~hmac=dd5ef67d2596a26c30d72142d334fed8a70c087f9400f1c93b93bec912f5a2c1");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+{% endblock %}
 {% block content %}
-<div class="c_header">
-    <h4>마이페이지</h2>
+<div id="user-detail">
+    <h1>마이 페이지</h1>
+    <div class="id">아이디 <span>{{user.user_id}}</span></div>
+    <div class="name">이름 <span>{{user.name}}</span></div>
+    <div class="email">이메일 <span>{{user.email}}</span></div>
+    <div class="phone">전화번호 <span>{{user.user_tel}}</span></div>
+    <div id="image">{% if user.profile_image %}                
+        <img src = '{{user.profile_image.url}}'>
+    {% else %}
+        <img src="" alt="">            
+    {% endif %} </div>
 </div>
-<table class="table">
-    <tr>
-        <th width='20%'>아이디</th>
-        <td>{{user.user_id}}</td>      
-    </tr>
-    <tr>
-        <th>이름</th>
-        <td>{{user.name}}</td>      
-    </tr>
-    <tr>
-        <th>프로필 사진</th>
-        <td>
-            {% if user.profile_image %}                
-                <img src = '{{user.profile_image.url}}'>
-            {% else %}
-                <img src="" alt="">            
-            {% endif %} 
-            
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-            
-        </td>
-    </tr>
-    <tr>
-        <th width='20%'>이메일</th>
-        <td>{{user.email}}</td>      
-    </tr>
-    <tr>
-        <th>전화번호</th>
-        <td>{{user.user_tel}}</td>      
-    </tr>
-</table>
-<a href="">내 정보수정</a>
+
 
 
 {% endblock %}

@@ -1,27 +1,21 @@
-<!DOCTYPE html>
-<html lang="ko">
-<br>
-
-    <title>Document</title>
-    
-    <nav>
-        <h1>
-            게시글수정 페이지
-        </h1>
-        <a href="{% url 'reviews:feeds_list' %}">게시글 목록</a>
-    </nav>
-
-</head>
-<body>
-        <div id="feed-add">
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div>
-                    <label for="id_images">이미지</label>
-                    <input id="id_images" name="images" type="file" multiple>
-                </div>
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary"> 수정 </button>
-        </div>          
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+<div id="feed-update">
+    <form method="POST" enctype="multipart/form-data" action="">
+        {% csrf_token %}
+        
+        <input id="title" name="title" type="text" value="{{ post.title }}">
+        <input type="number" id="score" name="score">      
+        
+        <textarea name="content" id="content" cols="30" rows="10">{{ post.content }}</textarea>
+        
+        <div>
+            <label for="id_images">이미지</label>
+            <input id="id_images" name="images" type="file" multiple>
+        </div>
+        
+        
+        <button type="submit" class="btn btn-primary"> 수정 </button>
+    </form>
+</div>          
+{% endblock%}

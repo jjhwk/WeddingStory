@@ -10,7 +10,7 @@ class Post(models.Model):
     content = models.TextField("포스트 내용") 
     created_at = models.DateTimeField("작성 일시", auto_now_add=True) 
     updated_at = models.DateTimeField("글수정 시간", auto_now=True)
-    view = models.PositiveIntegerField(default=0)
+    view = models.IntegerField(default=0)
     score = models.IntegerField("평점", validators=[MinValueValidator(0), MaxValueValidator(5)])
 
 

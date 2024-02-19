@@ -10,6 +10,9 @@ from django.contrib import messages
 # Create your views here.
 def feed_detail(request, post_id):
     post = Post.objects.get(id=post_id)
+    Post.objects.filter(id=post_id).update(view = post.view+1)
+    post = Post.objects.get(id=post_id)
+    
     comment_form = CommentForm()
     context = {
        "post" : post,
@@ -18,11 +21,12 @@ def feed_detail(request, post_id):
     return render(request, "reviews/feed_detail.html", context)
 
 def feeds_list(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by("-pk")
     comment_form =CommentForm()
     context = {
        "posts" : posts,   
-       "comment_form":comment_form     
+       "comment_form":comment_form
+            
     }
     
     return render(request, "reviews/feeds_list.html", context)
@@ -68,22 +72,43 @@ def feed_delete(request, post_id):
     
 def feed_update(request, post_id):
     post = get_object_or_404(Post, id=post_id)
+    print(post.content)
     if post.user != request.user:
         messages.error(request, '수정권한이 없습니다')
         return redirect('reviews:feed_detail', post_id=post.id)
+    
     if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.save()
-            return redirect('reviews:feed_detail', post_id=post.id)
+        print(request.POST)
+        # form = PostForm(request.POST, instance=post)
+        print(request.POST)
+        
+        Post.objects.create(
+            id=post_id,
+            title=request.POST["title"],
+            content = request.POST["content"],      
+            score = request.POST["score"]          
+        )
+        url = reverse('reviews:feed_detail')+"/"+post.id+"/"
+        print(url)
+        return redirect('reviews:feed_detail', post_id=post.id)
     else:
         form = PostForm(instance=post)
-    context = {'form': form}
-    return render(request, 'reviews/feed_update.html', context)
+        context = { 'form': form,
+                'post':post
+            }
+        return render(request, 'reviews/feed_update.html', context)
     
 
+def feed_update_page(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    print(post)
+    if request.method == "POST":
         
+        form = PostForm(instance=post)
+        context = {
+                'post':post
+            }
+        return render(request, 'reviews/feed_update.html', context)
 
 
 @require_POST # 댓글 작성을 처리할 View, Post 요청만 허용
