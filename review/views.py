@@ -57,6 +57,7 @@ def feed_add(request):
     context = {"form": form} 
     return render(request, "reviews/feed_add.html", context)
 
+
 def feed_delete(request, post_id):
     post = Post.objects.get(id=post_id)
     if post.user == request.user:
