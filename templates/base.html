@@ -12,9 +12,22 @@
         <p>Wedding Story</p>
         <a href="">map</a>
         <a href="">cart</a>
-        <a href="">login</a>
 
     </header>
+
+    <div class="container">
+        {% if user.is_authenticated %}
+          <p>{{ user }}님, 안녕하세요.</p>
+          <form action="{% url 'users:logout' %}" method="POST">
+          {% csrf_token %}
+          <button>Logout</button>
+          </form>
+          <a href="{% url 'users:update' %}">회원정보수정</a>
+        {% else %}
+          <a href="{% url 'users:login' %}">Login</a>
+          <a href="{% url 'users:signup' %}">signup</a>
+        {% endif %}
+
     {% block content%}
     {% endblock %}
 </body>

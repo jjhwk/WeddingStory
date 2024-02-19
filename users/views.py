@@ -5,13 +5,7 @@ from users.models import User
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import (
-    UserCreationForm,
-    UserChangeForm,
-    AuthenticationForm,
-    PasswordChangeForm,
-)
-
+from users.forms import CustomUserChangeForm
 
 
 def signup(request):
@@ -61,6 +55,7 @@ def user_logout(request):
 def detail(request, pk):
     User = get_user_model()
     user = get_object_or_404(User, pk=pk)
+    print(pk)
     context = {
         'user': user,
 
@@ -69,20 +64,38 @@ def detail(request, pk):
 
 
 
-def update(request):
-    if request.method == "POST":
-    	# updating
-        user_change_form = UserChangeForm(data=request.POST, instance=request.user)
-        
-        if user_change_form.is_valid() and profile_form.is_valid():
-            user = user_change_form.save()
-        
-    else:
-        # editting
-        user_change_form = UserChangeForm(instance=request.user)
 
-        context = {
-            'user_change_form': user_change_form,
-        }
+def update(request):
+    if request.method == 'POST':
+        print(request.POST)
+        form = CustomUserChangeForm(request.POST, instance=request.user, files=request.FILES)
+        # print(form)
+        if form.is_valid():
+            form.save()
+            
+            return redirect(f'/users/detail/{request.user.id}/')
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+    context = {
+        'form':form,
+    }
+    return render(request, 'users/update.html', context)
+
+
+
+# def update(request):
+#     if request.method == "POST":
+#     	# updating
+#         password = request.POST["password"]
+#         user = User.objects.get(user_id=user_id)
+#         user.objects.update(password=password )
         
-        return render(request, 'users/update.html', context)
+#     else:
+#         # editting
+#         user_change_form = CustomUserChangeForm(instance=request.user)
+
+#         context = {
+#             'form': user_change_form,
+#         }
+        
+#         return render(request, 'users/update.html', context)

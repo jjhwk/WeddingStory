@@ -63,35 +63,3 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 
-
-# class Profile(models.Model):
-#     user = models.OneToOneField(
-#         settings.AUTH_USER_MODEL,
-#         on_delete=models.CASCADE,
-#         null=True,
-#         blank=True
-#     )
-#     location = models.CharField(max_length=200, blank=True, null=True)
-#     address = models.CharField(max_length=100)
-#     profile_picture = models.ImageField
-
-#     @property
-#     def name(self):
-#         if self.user_id is not None:
-#             return self.user.username
-    
-#     @property
-#     def email(self):
-#         if self.user_id is not None:
-#             return self.user.email
-   
-
-class Profile(models.Model):
-    # user_id = models.OneToOneField(settings.USER, unique = True, max_length = 16)    
-    name = models.CharField("이름",  max_length = 20)
-    user_tel = models.CharField("전화번호",  max_length = 11)
-    email = models.EmailField("이메일", max_length =20)
-    objects = UserManager()
-    profile_image = models.ImageField("프로필 이미지", upload_to="users/profile",
-                                        blank=True)
-    short_description = models.TextField("소개글", blank=True)
