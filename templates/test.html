@@ -17,6 +17,12 @@ https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css
     <header>
         <p>Wedding Story</p>
         <p><a href="{% url 'index:map' %}">내 주변 찾기</a></p>
+        {% if not user.is_authenticated %}
+        <a href="{% url 'users:login' %}">로그인</a>
+        {% else %}
+        <a href="{% url 'users:detail' user.id %}">마이페이지</a>
+        <a href="{% url 'users:logout' %}">로그아웃</a>
+        {% endif %}
     </header>
     <!-- <section id="theme">
         <div><img src="{% static 'img/marry.png' %}" alt=""></div>
