@@ -1,5 +1,21 @@
-{% extends '_base.html' %}
+{% load static%}
 
-{% block base_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Story</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    {% block head%}{% endblock%}
+</head>
+<body>
+    <header>
+        <p><a href="/">Wedding Story</a></p>
+        <p><a href="{% url 'index:map' %}">내 주변 찾기</a></p>
+    </header>
+    
     {% block content %}{% endblock %}
-{% endblock%}
+    
+</body>
+</html>

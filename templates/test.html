@@ -27,9 +27,9 @@ https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css
 
     
         <div id="images">
-            <div class="img img1" style="width: 100%; height: 919px;"></div>
-            <div class="img img2" style="width: 100%; height: 919px;"></div>
-            <div class="img img3" style="width: 100%; height: 919px;"></div>
+            <div class="img img1" style="width: 100%; height: 100vh;"></div>
+            <div class="img img2" style="width: 100%; height: 100vh;"></div>
+            <div class="img img3" style="width: 100%; height: 100vh;"></div>
         </div>
 
     
@@ -41,11 +41,12 @@ https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css
             // console.log(document.querySelector(".img2"));
             // console.log(document.querySelector(".img3"));
             
-            if (window.scrollY > 0 & window.scrollY < 919) {
+            if (window.scrollY >= 0 & window.scrollY <= 918) {
                 document.querySelector(".img1").style.opacity = (919-window.scrollY)/919
                 document.querySelector(".img2").style.opacity = window.scrollY/919
+                document.querySelector(".img3").style.opacity = 0
             }
-            else {
+            else if(window.scrollY > 1816){
                 document.querySelector(".img2").style.opacity = (919*3-window.scrollY)/919
                 document.querySelector(".img3").style.opacity = window.scrollY/919/3
             }

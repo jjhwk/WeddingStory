@@ -24,10 +24,15 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+a{
+    text-decoration: none;
+    color: black;
+}
 body {
 	line-height: 1;
     height: 100vh;
 }
+
 ol, ul {
 	list-style: none;
 }
@@ -54,9 +59,12 @@ header{
     top: 0;    
     width: 100%;
     height: 50px;
-    background-color: transparent;
+    background-color: white;
     z-index: 999;
     border-bottom: 1px solid lightgrey;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
     header p {
         color: rgb(247, 202, 203);
