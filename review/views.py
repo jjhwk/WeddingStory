@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from review.models import Post, Comment
+from review.models import Post, Comment, PostImage
 from review.forms import PostForm, CommentForm
-from picture.models import PostImage
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.urls import reverse
+from django.contrib import messages
 
 
 # Create your views here.
@@ -57,6 +57,33 @@ def feed_add(request):
     context = {"form": form} 
     return render(request, "reviews/feed_add.html", context)
 
+def feed_delete(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if post.user == request.user:
+        post.delete()
+        return redirect("reviews:feeds_list")
+    else:
+        return HttpResponseForbidden("이 댓글을 삭제할 권한이 없습니다")
+    
+def feed_update(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if post.user != request.user:
+        messages.error(request, '수정권한이 없습니다')
+        return redirect('reviews:feed_detail', post_id=post.id)
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            return redirect('reviews:feed_detail', post_id=post.id)
+    else:
+        form = PostForm(instance=post)
+    context = {'form': form}
+    return render(request, 'reviews/feed_update.html', context)
+    
+
+        
+
 
 @require_POST # 댓글 작성을 처리할 View, Post 요청만 허용
 def comment_add(request, post_id):
@@ -86,6 +113,7 @@ def comment_add(request, post_id):
 @require_POST
 def comment_delete(request, comment_id):
     comment = Comment.objects.get(id=comment_id)
+    
     if comment.user == request.user:
         comment.delete()
         url = reverse("reviews:feeds_list") + f"#post-{comment.post.id}"

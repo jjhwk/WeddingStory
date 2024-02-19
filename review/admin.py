@@ -1,7 +1,9 @@
 from django.contrib import admin
-from review.models import Post, Comment
-from picture.models import PostImage
-from picture.admin import PostImageInline
+from review.models import Post, Comment, PostImage
+
+class PostImageInline(admin.TabularInline):
+    model = PostImage
+    extra = 1
 
 @admin.register(Post)
 class ReviewAdmin(admin.ModelAdmin):
@@ -15,16 +17,9 @@ class ReviewAdmin(admin.ModelAdmin):
     inlines = [
 
         PostImageInline,
- 
+
     ]
 
-@admin.register(PostImage)
-class PostImageAdmin(admin.ModelAdmin):
-    list_display = [
-        "id",
-        "post",
-        "photo",
-    ]
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):

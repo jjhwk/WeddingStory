@@ -4,7 +4,13 @@
         <title>
             리뷰 상세페이지
         </title>
-        <h1>리뷰 상세페이지</h1>
+        <nav>
+            <h1>
+                <a href="{% url 'reviews:feed_detail' post_id=post.id %}">리뷰 상세페이지</a>
+            </h1>            
+            <a href="{% url 'reviews:feeds_list' %}">게시글 목록</a>
+            <a href="{% url 'reviews:feed_add' %}">게시글 작성</a>
+        </nav>
     </head>
 
     <body> 
@@ -12,7 +18,41 @@
             <h2>사용자명 : {{ post.user_id }}</h2>
                         <h2>평점 : {{ post.score }}</h2>
                         <h2>제목 : {{ post.title }}</h2>
+
+                        <div class="post-images splide">
+                            <div class="splide__track">
+                                <ul class="splide__list">
+                                    {% for image in post.postimage_set.all %}
+                                        {% if image.photo %}
+                                            <li class="splide__slide">
+                                                <img src="{{ image.photo.url }}">
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+
                         <h2>내용 : {{ post.content }}</h2>
+                        
+                        {% if user == post.user %}
+                            <form method="POST" action="{% url 'reviews:feed_delete'  post_id=post.id %}">
+                                <!-- comment.id의 comment는 for문 안의 comment에 해당하는 id-->
+                                {% csrf_token %}
+                                <button type="submit">삭제</button>
+                            </form>
+                        {% endif %}
+
+                       
+                        {% if user == post.user %}
+                            <form method="POST" action="{% url 'reviews:feed_update'  post_id=post.id %}">
+                                <!-- comment.id의 comment는 for문 안의 comment에 해당하는 id-->
+                                {% csrf_token %}
+                                <button type="submit">수정</button>
+                            </form>
+                        {% endif %}
+                          
+
                         <h2>조회수 : {{ post.view }}</h2>
                         {% if post.updated_at %}
                         <h2>수정시간 : {{ post.updated_at }}</h2>
@@ -22,23 +62,25 @@
         </article>
             {% if post.comment_set.exists %}
 
-            <p><b>{{ post.comment_set.count }}개의 댓글이 있습니다.</b></p>
+                <p><b>{{ post.comment_set.count }}개의 댓글이 있습니다.</b></p>
 
-            {% for comment in post.comment_set.all %}
-                <li>    
-                    <p style="font-size: 20px;">{{ comment.user.user_id }}: {{ comment.content }} {{ comment.created_at|date:'m.d H:i' }}</p>
-                    {% if user == comment.user %}
-                        <form method="POST" action="{% url 'reviews:comment_delete'  comment_id=comment.id %}">
-                            <!-- comment.id의 comment는 for문 안의 comment에 해당하는 id-->
-                            {% csrf_token %}
-                            <button type="submit">삭제</button>
-                        </form>
-                    {% endif %}
-                </li>    
-            {% endfor %}
+                {% for comment in post.comment_set.all %}
+                    <li>    
+                        <p style="font-size: 20px;">{{ comment.user.user_id }}: {{ comment.content }} {{ comment.created_at|date:'m.d H:i' }}</p>
+                        {% if user == comment.user %}
+                            <form method="POST" action="{% url 'reviews:comment_delete'  comment_id=comment.id %}">
+                                <!-- comment.id의 comment는 for문 안의 comment에 해당하는 id-->
+                                {% csrf_token %}
+                                <button type="submit">삭제</button>
+                            </form>
+                        {% endif %}
+                    </li>    
+                {% endfor %}
 
-            {% else %}
-            <p>댓글이 없어요..</p>
+                
+
+                {% else %}
+                <p>댓글이 없어요..</p>
             {% endif %}
         
             <div class="post-comment-create">

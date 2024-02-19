@@ -7,7 +7,7 @@ from users.models import User
 class Post(models.Model):  
     user = models.ForeignKey(User, verbose_name="사용자 아이디", on_delete=models.CASCADE)  
     title = models.CharField("포스트 제목", max_length=100)
-    content = models.TextField("포스트 내용")
+    content = models.TextField("포스트 내용") 
     created_at = models.DateTimeField("작성 일시", auto_now_add=True) 
     updated_at = models.DateTimeField("글수정 시간", auto_now=True)
     view = models.PositiveIntegerField(default=0)
@@ -30,3 +30,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content
+    
+class PostImage(models.Model):
+    post = models.ForeignKey("review.Post", verbose_name="포스트", on_delete=models.CASCADE)
+    photo = models.ImageField("사진", upload_to="post")
