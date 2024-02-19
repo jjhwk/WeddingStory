@@ -1,0 +1,17 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="c_header" style="margin-top: 500px;">
+
+    <!-- <p class="contxt">회원정보수정</p> -->
+
+
+    <form action="{% url 'users:update' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+       
+        <input type="submit" value="저장">
+    </form>
+
+{% endblock content %}
