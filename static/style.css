@@ -91,7 +91,7 @@ body{
     opacity: 0;
 }
 .img1 {
-    background-image: url(https://cdn.imweb.me/thumbnail/20230823/0038f9fbff316.jpg);
+    background-image: url("https://cdn.imweb.me/thumbnail/20230823/0038f9fbff316.jpg");
     background-color: #dddddd;
     background-repeat: no-repeat;
     background-size: cover;
@@ -117,7 +117,7 @@ body{
 
 }
 .img2 {
-    background-image: url(https://cdn.imweb.me/thumbnail/20230823/59fdcecd5b985.jpg);
+    background-image: url("https://cdn.imweb.me/thumbnail/20230823/59fdcecd5b985.jpg");
     background-color: #dddddd;
     background-repeat: no-repeat;
     background-size: cover;
@@ -128,7 +128,7 @@ body{
     top: 0;
 }
 .img3 {
-    background-image: url(https://cdn.imweb.me/thumbnail/20230823/e2ed937fa7df4.jpg);
+    background-image: url("https://cdn.imweb.me/thumbnail/20230823/e2ed937fa7df4.jpg");
     background-color: #dddddd;
     background-repeat: no-repeat;
     background-size: cover;
