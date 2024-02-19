@@ -6,14 +6,13 @@
     
     <nav>
         <h1>
-            <a href="{% url 'reviews:feed_add' %}">게시글작성 페이지</a>
+            게시글수정 페이지
         </h1>
         <a href="{% url 'reviews:feeds_list' %}">게시글 목록</a>
     </nav>
 
 </head>
 <body>
-
         <div id="feed-add">
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -22,8 +21,7 @@
                     <input id="id_images" name="images" type="file" multiple>
                 </div>
                 {{ form.as_p }}
-                <button type="submit" class="btn btn-primary"> 작성 </button>
-        </div>  
-        
+                <button type="submit" class="btn btn-primary"> 수정 </button>
+        </div>          
 </body>
 </html>
