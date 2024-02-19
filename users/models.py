@@ -8,7 +8,7 @@ from django.utils import timezone
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, user_id, password=None):
+    def create_user(self, user_id, name, email, password):
         """
         주어진 이메일, 닉네임, 비밀번호 등 개인정보로 User 인스턴스 생성
         """
@@ -17,6 +17,9 @@ class UserManager(BaseUserManager):
 
         user = self.model(
             user_id = user_id,
+            email = email,
+            name = name,
+            
             
         )
 

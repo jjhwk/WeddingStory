@@ -7,34 +7,37 @@ from django.urls import reverse
 from django.contrib import auth
 
 
+
+
 def signup(request):
     if request.method == 'POST':
         
         if request.POST['password1'] == request.POST['password2']:
-            user = User.objects.create(
+            user = User.objects.create_user(
                                             user_id=request.POST['username'],
                                             password=request.POST['password1'],
                                             email=request.POST['email'],
-                                            name=request.POST['name'])
-            auth.login(request, user)
+                                            name=request.POST['name']
+                                            )
+            login(request, user)
             return redirect('/')
-        # return render(request, "users/signup.html")
+   
     return render(request, "users/signup.html")
 
 
 
-
-def login(request):
+def user_login(request):
     if request.method == 'POST':
+        print(request.POST)
         username = request.POST['username']
         password = request.POST['password']
-        print(username)
-        print(password)
+        print("id",username)
+        print("pw",password)
 
-        user = auth.authenticate(request, user_id=username, password=password)
+        user = authenticate(request, user_id=username, password=password)
         print(user)
         if user is not None:
-            auth.login(request, user)
+            login(request, user)
             return redirect('/')
         else:
             
@@ -42,9 +45,9 @@ def login(request):
         
     return render(request, 'users/login.html')
 
-def logout(request):
+def user_logout(request):
     if request.method == 'POST':
-        auth.logout(request)
+        logout(request)
         return redirect('/')
     return render(request, 'users/login.html') 
 
