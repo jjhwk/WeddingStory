@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <title>Document</title>
-    <h>리뷰 목록</h>
+<hr>
+    <title>Document</title> 
+    <nav>
+        <h1>
+            <a href="{% url 'reviews:feeds_list' %}">게시글 목록</a>
+        </h1>
+        <a href="{% url 'reviews:feed_add' %}">게시글 작성</a>
+    </nav>
 </head>
 <body>
     <div id="feeds-list">            
-        <ul class="feeds">         
-            <h1>test</h1>              
+        <ul class="feeds">                      
             {% for post in posts %}   
-                 <li class="post"> 
+                <li class="post"> 
                     <h2>사용자명 : {{ post.user_id }}</h2>
                     <h2>평점 : {{ post.score }}</h2>
-                    <h2>제목 : {{ post.title }}</h2>
+                    <h2> 제목 : {{ post.title }}</h2>
                     <h2>내용 : {{ post.content }}</h2>
                     <h2>조회수 : {{ post.view }}</h2>
                     {% if post.updated_at %}
@@ -20,6 +24,7 @@
                     {% else %}
                     <h2>생성시간 : {{ post.created_at }}</h2>
                     {% endif %}
+                    <button><a href="{% url 'reviews:feed_detail' post_id=post.id %}">상세보기</a></button>
                 </li>  
             {% endfor %}
         </ul>

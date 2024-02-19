@@ -12,6 +12,7 @@ class PostForm(forms.ModelForm):
             "content",
         ]
         
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
@@ -19,7 +20,7 @@ class CommentForm(forms.ModelForm):
             "post",      
             "content",
         ]
-        widgets = {     
+        widgets = {        # widgets : 특수한 상황 작성시 사용
             "content": forms.Textarea(
                 attrs={
                     "placeholder": "댓글 달기...",

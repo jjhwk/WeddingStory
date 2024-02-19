@@ -1,34 +1,21 @@
-{% load static %}
+{% load static%}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'style.css'%}">
-    <title>Document</title>
+    <title>Wedding Story</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    {% block head%}{% endblock%}
 </head>
 <body>
     <header>
-        <p>Wedding Story</p>
-        <a href="">map</a>
-        <a href="">cart</a>
-
+        <p><a href="/">Wedding Story</a></p>
+        <p><a href="{% url 'index:map' %}">내 주변 찾기</a></p>
     </header>
+    
+    {% block content %}{% endblock %}
 
-    <div class="container">
-        {% if user.is_authenticated %}
-          <p>{{ user }}님, 안녕하세요.</p>
-          <form action="{% url 'users:logout' %}" method="POST">
-          {% csrf_token %}
-          <button>Logout</button>
-          </form>
-          <a href="{% url 'users:update' %}">회원정보수정</a>
-        {% else %}
-          <a href="{% url 'users:login' %}">Login</a>
-          <a href="{% url 'users:signup' %}">signup</a>
-        {% endif %}
-
-    {% block content%}
-    {% endblock %}
 </body>
 </html>
